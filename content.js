@@ -16,11 +16,42 @@ function hideStuff() {
     el.style.display = "none";
   });
 
-  document.querySelectorAll("ytd-rich-grid-renderer").forEach(function (el) {
-    el.style.display = "none";
+  // document.querySelectorAll("ytd-rich-grid-renderer").forEach(function (el) {
+  //   el.style.display = "none";
+  // });
+
+setInterval(function () {
+
+  const allowedChannels = [
+    "CodeWithHarry",
+    "Apna College"
+  ];
+
+  document
+  .querySelectorAll("ytd-rich-item-renderer")
+  .forEach(function (video) {
+
+    const channel =
+      video.querySelector(
+        "ytd-channel-name"
+      );
+
+    if (!channel) {
+      return;
+    }
+
+    const name =
+      channel.innerText.trim();
+
+    if (
+      !allowedChannels.includes(name)
+    ) {
+      video.style.display = "none";
+    }
+
   });
 
-
+}, 1000);
   //check
 
   if (document.getElementById("ext-drawer-1")) {
@@ -29,7 +60,7 @@ function hideStuff() {
 
 
   //DRAWER 1
-  
+
   const drawer1 = document.createElement("div");
 
   drawer1.innerHTML = `
@@ -102,7 +133,7 @@ function hideStuff() {
 
 
   //DRAWER 2
-  
+
   const drawer2 = document.createElement("div");
 
   drawer2.innerHTML = `
@@ -117,7 +148,7 @@ function hideStuff() {
       min-width:220px;
       max-width:90vw;
       height:100vh;
-      background:#0f172a;
+      background:#18181b;
       z-index:999998;
       transition:right 0.3s;
       box-shadow:-2px 0 10px rgba(0,0,0,.3);
@@ -134,7 +165,7 @@ function hideStuff() {
         transform:translateY(-50%);
         height:80px;
         border:none;
-        background:#0f172a;
+        background:#18181b;
         color:white;
         cursor:pointer;
         border-radius:9px 0 0 9px;
@@ -160,7 +191,8 @@ function hideStuff() {
     ></div>
 
     <div style="padding:10px;color:white;">
-      <div style="
+
+  <div style="
   font-size:18px;
   font-weight:bold;
   margin-bottom:10px;
@@ -216,6 +248,18 @@ function hideStuff() {
     ">
     Clear
     </button>
+
+  </div>
+
+  <div
+  id="yt-notes-list"
+  style="
+  margin-top:15px;
+  max-height:70vh;
+  overflow:auto;
+  ">
+  </div>
+
 
   </div>
 
@@ -395,7 +439,7 @@ function hideStuff() {
 
 
   //MOUSE UP
-  
+
   document.addEventListener("mouseup", function () {
 
     resizing1 = false;
@@ -405,10 +449,27 @@ function hideStuff() {
 
   });
 
+//notes logic
+function getVideoId() {
+
+  const url =
+    new URL(window.location.href);
+
+  return url.searchParams.get("v") || "home";
+
+}
+
+function getNotesKey() {
+
+  return (
+    "yt-notes-" +
+    getVideoId()
+  );
+
+}
 
 
-
-  const input =
+const input =
   document.getElementById("yt-note-input");
 
 const addBtn =
@@ -448,13 +509,99 @@ function getTime() {
   return min + ":" + sec;
 }
 
+function timeToSeconds(time) {
+
+  const parts =
+    time.split(":");
+
+  return (
+    Number(parts[0]) * 60 +
+    Number(parts[1])
+  );
+}
+
+function createMarkers() {
+
+  const progress =
+    document.querySelector(
+      ".ytp-progress-bar"
+    );
+
+  const video =
+    getVideo();
+
+  if (!progress || !video) {
+    return;
+  }
+
+  document
+    .querySelectorAll(".yt-note-marker")
+    .forEach(function (el) {
+      el.remove();
+    });
+
+const notes =
+  JSON.parse(
+    localStorage.getItem(
+      getNotesKey()
+    ) || "[]"
+  );
+
+  notes.forEach(function (note) {
+
+    const seconds =
+      timeToSeconds(note.time);
+
+    const percent =
+      (seconds / video.duration) * 100;
+
+    const marker =
+      document.createElement("div");
+
+    marker.className =
+      "yt-note-marker";
+
+    marker.style = `
+      position:absolute;
+      left:${percent}%;
+      top:0;
+      width:7px;
+      height:110%;
+      background:#00ff99;
+      z-index:9999;
+      border-radius:2px;
+      cursor:pointer;
+      box-shadow:0 0 10px #00ff99;
+    `;
+
+    marker.title =
+      note.time + " - " + note.text;
+
+    marker.onclick = function (e) {
+
+      e.stopPropagation();
+
+      video.currentTime =
+        seconds;
+
+      video.play();
+    };
+
+    progress.appendChild(marker);
+
+  });
+
+}
+
 function loadNotes() {
 
   list.innerHTML = "";
 
   const notes =
     JSON.parse(
-      localStorage.getItem("yt-notes") || "[]"
+      localStorage.getItem(
+        getNotesKey()
+      ) || "[]"
     );
 
   notes.forEach(function (note, index) {
@@ -470,7 +617,7 @@ function loadNotes() {
     `;
 
     item.innerHTML = `
-    
+
     <div class="yt-note-time"
     style="
     color:#60a5fa;
@@ -506,20 +653,15 @@ function loadNotes() {
 
     timeEl.onclick = function () {
 
-      const video = getVideo();
+      const video =
+        getVideo();
 
       if (!video) {
         return;
       }
 
-      const parts =
-        note.time.split(":");
-
-      const seconds =
-        Number(parts[0]) * 60 +
-        Number(parts[1]);
-
-      video.currentTime = seconds;
+      video.currentTime =
+        timeToSeconds(note.time);
 
       video.play();
     };
@@ -531,17 +673,21 @@ function loadNotes() {
 
       const notes =
         JSON.parse(
-          localStorage.getItem("yt-notes") || "[]"
+          localStorage.getItem(
+            getNotesKey()
+          ) || "[]"
         );
 
       notes.splice(index, 1);
 
       localStorage.setItem(
-        "yt-notes",
+        getNotesKey(),
         JSON.stringify(notes)
       );
 
       loadNotes();
+
+      createMarkers();
     };
 
     list.appendChild(item);
@@ -561,7 +707,9 @@ addBtn.onclick = function () {
 
   const notes =
     JSON.parse(
-      localStorage.getItem("yt-notes") || "[]"
+      localStorage.getItem(
+        getNotesKey()
+      ) || "[]"
     );
 
   notes.unshift({
@@ -570,27 +718,46 @@ addBtn.onclick = function () {
   });
 
   localStorage.setItem(
-    "yt-notes",
+    getNotesKey(),
     JSON.stringify(notes)
   );
 
   input.value = "";
 
   loadNotes();
+
+  createMarkers();
 };
 
 clearBtn.onclick = function () {
 
-  localStorage.removeItem("yt-notes");
+  localStorage.removeItem(
+    getNotesKey()
+  );
 
   loadNotes();
+
+  createMarkers();
 };
 
 loadNotes();
 
+setInterval(function () {
 
+  createMarkers();
 
+}, 2000);
 
+document.addEventListener(
+  "yt-navigate-finish",
+  function () {
+
+    loadNotes();
+
+    createMarkers();
+
+  }
+);
 
 }
 
