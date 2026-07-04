@@ -1,14 +1,23 @@
 {
   "manifest_version": 3,
   "name": "YT Focus Mode",
-  "version": "1.0",
+  "version": "1.2",
 
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_width": 400,
+    "default_height": 500
   },
 
   "permissions": [
     "storage"
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["imgs/notes-bg.jpg"],
+      "matches": ["*://*.youtube.com/*"]
+    }
   ],
 
   "content_scripts": [

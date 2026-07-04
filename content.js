@@ -116,10 +116,11 @@ function hideStuff() {
       min-width:220px;
       max-width:90vw;
       height:100vh;
-      background:#18181b;
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
       z-index:999998;
       transition:right 0.3s;
-      box-shadow:-2px 0 10px rgba(0,0,0,.3);
       overflow:visible;
     "
   >
@@ -133,14 +134,20 @@ function hideStuff() {
         transform:translateY(-50%);
         height:80px;
         border:none;
-        background:#18181b;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         color:white;
         cursor:pointer;
-        border-radius:9px 0 0 9px;
+        border-radius:12px 0 0 12px;
         font-size:15px;
-        padding:0 5px;
+        font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        padding:0 10px;
         white-space:nowrap;
         writing-mode:vertical-lr;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-right: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
       "
     >
       Notes
@@ -158,87 +165,163 @@ function hideStuff() {
       "
     ></div>
 
-    <div style="padding:10px;color:white;">
+    <div style="padding:15px;color:white; height:100%; box-sizing:border-box; display:flex; flex-direction:column;">
 
-  <div style="
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
-  ">
-  Notes
-  </div>
+      <!-- Header: Notes + Import/Export Icons -->
+      <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+      ">
+        <div style="
+        font-size:20px;
+        font-weight:bold;
+        text-shadow:0 2px 6px rgba(0,0,0,0.5);
+        font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        ">
+        Notes
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button
+          id="yt-import-notes"
+          style="
+          width:40px;
+          height:40px;
+          border:none;
+          border-radius:12px;
+          background: rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(25px);
+          -webkit-backdrop-filter: blur(25px);
+          color:white;
+          cursor:pointer;
+          border:1px solid rgba(255,255,255,0.15);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+          "
+          title="Import Notes">
+          <i class="fa-solid fa-file-import"></i>
+          </button>
+          <button
+          id="yt-export-notes"
+          style="
+          width:40px;
+          height:40px;
+          border:none;
+          border-radius:12px;
+          background: rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(25px);
+          -webkit-backdrop-filter: blur(25px);
+          color:white;
+          cursor:pointer;
+          border:1px solid rgba(255,255,255,0.15);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+          "
+          title="Export Notes">
+          <i class="fa-solid fa-file-export"></i>
+          </button>
+        </div>
+      </div>
 
-  <textarea
-  id="yt-note-input"
-  placeholder="Write note..."
-  style="
-  width:100%;
-  height:100px;
-  background:#27272a;
-  color:white;
-  border:none;
-  outline:none;
-  padding:10px;
-  resize:none;
-  border-radius:8px;
-  box-sizing:border-box;
-  "></textarea>
+      <!-- Textarea Section -->
+      <div style="
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border:1px solid rgba(255, 255, 255, 0.15);
+      border-radius:20px;
+      padding:15px;
+      margin-bottom:15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+      ">
+        <textarea
+        id="yt-note-input"
+        placeholder="Write note..."
+        style="
+        width:100%;
+        height:100px;
+        background: transparent;
+        color:white;
+        border:none;
+        outline:none;
+        padding:0;
+        resize:none;
+        box-sizing:border-box;
+        font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size:14px;
+        text-shadow:0 2px 4px rgba(0,0,0,0.3);
+        "></textarea>
+      </div>
 
-  <div style="
-  display:flex;
-  gap:10px;
-  margin-top:10px;
-  ">
+      <!-- Buttons: Add Note | Clear -->
+      <div style="
+      display:flex;
+      gap:15px;
+      margin-bottom:15px;
+      ">
+        <button
+        id="yt-add-note"
+        style="
+        flex:1;
+        height:45px;
+        border:none;
+        border-radius:20px;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        color:white;
+        cursor:pointer;
+        font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size:15px;
+        transition: all 0.3s ease;
+        border:1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+        ">
+        Add Note
+        </button>
+        <button
+        id="yt-clear-notes"
+        style="
+        flex:1;
+        height:45px;
+        border:none;
+        border-radius:20px;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        color:white;
+        cursor:pointer;
+        font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size:15px;
+        transition: all 0.3s ease;
+        border:1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+        ">
+        Clear
+        </button>
+      </div>
 
-    <button
-    id="yt-add-note"
-    style="
-    flex:1;
-    height:40px;
-    border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:white;
-    cursor:pointer;
-    ">
-    Add Note
-    </button>
+      <!-- Notes List -->
+      <div
+      id="yt-notes-list"
+      style="
+      flex:1;
+      overflow:auto;
+      padding-right:5px;
+      ">
+      </div>
 
-    <button
-    id="yt-clear-notes"
-    style="
-    width:100px;
-    border:none;
-    border-radius:8px;
-    background:#dc2626;
-    color:white;
-    cursor:pointer;
-    ">
-    Clear
-    </button>
+      <input type="file" id="yt-import-file" accept=".json" style="display:none;">
 
-  </div>
-
-  <div
-  id="yt-notes-list"
-  style="
-  margin-top:15px;
-  max-height:70vh;
-  overflow:auto;
-  ">
-  </div>
-
-
-  </div>
-
-  <div
-  id="yt-notes-list"
-  style="
-  margin-top:15px;
-  max-height:70vh;
-  overflow:auto;
-  ">
-  </div>
     </div>
 
   </div>
@@ -246,6 +329,16 @@ function hideStuff() {
   `;
 
   document.body.appendChild(drawer2);
+
+  // Set background image with correct extension URL
+  const panel2El = document.getElementById("ext-drawer-2");
+  panel2El.style.backgroundImage = "url('" + chrome.runtime.getURL("imgs/notes-bg.jpg") + "')";
+
+  // Add Font Awesome for icons
+  const faLink = document.createElement("link");
+  faLink.rel = "stylesheet";
+  faLink.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css";
+  document.head.appendChild(faLink);
 
 
 
@@ -445,6 +538,12 @@ const addBtn =
 
 const clearBtn =
   document.getElementById("yt-clear-notes");
+const exportBtn =
+  document.getElementById("yt-export-notes");
+const importBtn =
+  document.getElementById("yt-import-notes");
+const importFile =
+  document.getElementById("yt-import-file");
 
 const list =
   document.getElementById("yt-notes-list");
@@ -533,13 +632,13 @@ const notes =
       position:absolute;
       left:${percent}%;
       top:0;
-      width:7px;
-      height:110%;
-      background:#00ff99;
+      width:4px;
+      height:100%;
+      background: linear-gradient(to top, rgba(96, 165, 250, 0.4), rgba(96, 165, 250, 1));
       z-index:9999;
-      border-radius:2px;
+      border-radius:4px;
       cursor:pointer;
-      box-shadow:0 0 10px #00ff99;
+      box-shadow: 0 0 12px rgba(96, 165, 250, 0.7), 0 0 2px rgba(255, 255, 255, 0.3) inset;
     `;
 
     marker.title =
@@ -578,10 +677,14 @@ function loadNotes() {
       document.createElement("div");
 
     item.style = `
-    background:#27272a;
-    padding:10px;
-    border-radius:10px;
-    margin-bottom:10px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding:15px;
+    border-radius:20px;
+    margin-bottom:15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     `;
 
     item.innerHTML = `
@@ -591,26 +694,39 @@ function loadNotes() {
     color:#60a5fa;
     cursor:pointer;
     font-size:14px;
+    font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    text-shadow:0 2px 6px rgba(0,0,0,0.5);
     ">
     ${note.time}
     </div>
 
     <div style="
-    margin-top:6px;
+    margin-top:10px;
     word-break:break-word;
+    font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size:14px;
+    line-height:1.6;
+    color: white;
+    text-shadow:0 2px 4px rgba(0,0,0,0.3);
     ">
     ${note.text}
     </div>
 
     <button class="yt-delete-note"
     style="
-    margin-top:10px;
-    background:#ef4444;
-    border:none;
+    margin-top:12px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border:1px solid rgba(255, 255, 255, 0.15);
     color:white;
-    padding:5px 10px;
-    border-radius:6px;
+    padding:8px 20px;
+    border-radius:20px;
     cursor:pointer;
+    font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size:13px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
     ">
     Delete
     </button>
@@ -708,6 +824,54 @@ clearBtn.onclick = function () {
   createMarkers();
 };
 
+// Export functionality
+exportBtn.onclick = function () {
+  const notes = JSON.parse(localStorage.getItem(getNotesKey()) || "[]");
+  const videoId = getVideoId();
+  const dataStr = JSON.stringify({
+    videoId: videoId,
+    exportDate: new Date().toISOString(),
+    notes: notes
+  }, null, 2);
+  const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+  const exportFileDefaultName = `yt-notes-${videoId}.json`;
+
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+};
+
+// Import functionality
+importBtn.onclick = function () {
+  importFile.click();
+};
+
+importFile.onchange = function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    try {
+      const importedData = JSON.parse(event.target.result);
+      if (importedData.notes && Array.isArray(importedData.notes)) {
+        // Merge with existing notes? Or replace? Let's replace for now
+        localStorage.setItem(getNotesKey(), JSON.stringify(importedData.notes));
+        loadNotes();
+        createMarkers();
+        alert('Notes imported successfully!');
+      } else {
+        alert('Invalid notes file!');
+      }
+    } catch (error) {
+      alert('Error importing notes: ' + error.message);
+    }
+  };
+  reader.readAsText(file);
+  importFile.value = ''; // Reset the file input
+};
+
 loadNotes();
 
 setInterval(function () {
@@ -790,8 +954,164 @@ function checkMode() {
 
 checkMode();
 
+// Session timer tracking
+let isTimerRunning = false;
+let timerUpdateInterval;
+let lastWatchedVideoId = null;
 
+function initSessionTimer() {
+  chrome.storage.local.get(["sessionStartTime", "totalPlayTimeMs", "lastActiveTime", "watchedVideoIds", "videoCount"], function(data) {
+    const now = Date.now();
+    
+    // If no start time or last active was more than 30 mins ago, start new session
+    if (!data.sessionStartTime || (now - data.lastActiveTime) > 1800000) {
+      chrome.storage.local.set({
+        sessionStartTime: now,
+        lastActiveTime: now,
+        totalPlayTimeMs: 0,
+        watchedVideoIds: [],
+        videoCount: 0
+      });
+    } else {
+      // Just update last active time
+      chrome.storage.local.set({
+        lastActiveTime: now
+      });
+    }
+  });
+}
 
+// Get current YouTube video ID
+function getCurrentVideoId() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('v');
+}
+
+// Track video watch
+function trackVideoWatch() {
+  const videoId = getCurrentVideoId();
+  if (!videoId || videoId === lastWatchedVideoId) return;
+  
+  lastWatchedVideoId = videoId;
+  
+  chrome.storage.local.get(["watchedVideoIds", "videoCount"], function(data) {
+    const watchedIds = data.watchedVideoIds || [];
+    if (!watchedIds.includes(videoId)) {
+      watchedIds.push(videoId);
+      chrome.storage.local.set({
+        watchedVideoIds: watchedIds,
+        videoCount: (data.videoCount || 0) + 1
+      });
+    }
+  });
+}
+
+// Monitor URL changes to detect new videos
+function monitorUrlChanges() {
+  let lastUrl = location.href;
+  
+  const observer = new MutationObserver(function() {
+    const newUrl = location.href;
+    if (newUrl !== lastUrl) {
+      lastUrl = newUrl;
+      trackVideoWatch();
+    }
+  });
+  
+  observer.observe(document.body, { subtree: true, childList: true });
+  
+  // Also check initial page
+  trackVideoWatch();
+}
+
+function startPlayTimer() {
+  if (isTimerRunning) return;
+  isTimerRunning = true;
+  
+  // Record start time when video starts playing
+  chrome.storage.local.get(["lastPlayStart"], function(data) {
+    if (!data.lastPlayStart) {
+      chrome.storage.local.set({
+        lastPlayStart: Date.now()
+      });
+    }
+  });
+  
+  // Update total play time every second while playing
+  timerUpdateInterval = setInterval(function() {
+    chrome.storage.local.get(["lastPlayStart", "totalPlayTimeMs"], function(data) {
+      const now = Date.now();
+      const lastStart = data.lastPlayStart || now;
+      const elapsedThisSession = now - lastStart;
+      
+      chrome.storage.local.set({
+        totalPlayTimeMs: (data.totalPlayTimeMs || 0) + 1000, // Add 1 second
+        lastPlayStart: now, // Reset start time for next update
+        lastActiveTime: now
+      });
+    });
+  }, 1000);
+}
+
+function stopPlayTimer() {
+  if (!isTimerRunning) return;
+  isTimerRunning = false;
+  
+  if (timerUpdateInterval) {
+    clearInterval(timerUpdateInterval);
+  }
+  
+  // Final update for current play period
+  chrome.storage.local.get(["lastPlayStart", "totalPlayTimeMs"], function(data) {
+    const now = Date.now();
+    const lastStart = data.lastPlayStart || now;
+    const elapsedThisSession = now - lastStart;
+    
+    chrome.storage.local.set({
+      totalPlayTimeMs: (data.totalPlayTimeMs || 0) + elapsedThisSession,
+      lastPlayStart: null,
+      lastActiveTime: now
+    });
+  });
+}
+
+// Monitor video play/pause
+function monitorVideoPlayback() {
+  const video = document.querySelector("video");
+  if (!video) {
+    // Try again in 1 second if video not found
+    setTimeout(monitorVideoPlayback, 1000);
+    return;
+  }
+  
+  video.addEventListener("play", function() {
+    startPlayTimer();
+  });
+  
+  video.addEventListener("pause", function() {
+    stopPlayTimer();
+  });
+  
+  video.addEventListener("ended", function() {
+    stopPlayTimer();
+  });
+  
+  // Check initial state
+  if (!video.paused && !video.ended) {
+    startPlayTimer();
+  }
+}
+
+// Update last active time every 30 seconds
+setInterval(function() {
+  chrome.storage.local.set({
+    lastActiveTime: Date.now()
+  });
+}, 30000);
+
+initSessionTimer();
+monitorVideoPlayback();
+monitorUrlChanges();
 
 setInterval(function () {
 
