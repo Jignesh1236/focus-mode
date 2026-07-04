@@ -21,19 +21,15 @@ function hideStuff() {
   });
 
 
-  /* =========================
-     DRAWERS ALREADY EXIST ?
-  ========================= */
+  //check
 
   if (document.getElementById("ext-drawer-1")) {
     return;
   }
 
 
-  /* =========================
-     DRAWER 1
-  ========================= */
-
+  //DRAWER 1
+  
   const drawer1 = document.createElement("div");
 
   drawer1.innerHTML = `
@@ -105,10 +101,8 @@ function hideStuff() {
 
 
 
-  /* =========================
-     DRAWER 2
-  ========================= */
-
+  //DRAWER 2
+  
   const drawer2 = document.createElement("div");
 
   drawer2.innerHTML = `
@@ -243,9 +237,7 @@ function hideStuff() {
 
 
 
-  /* =========================
-     ELEMENTS
-  ========================= */
+  //ELEMENTS
 
   const panel1 = document.getElementById("ext-drawer-1");
   const toggle1 = document.getElementById("ext-toggle-1");
@@ -257,18 +249,14 @@ function hideStuff() {
 
 
 
-  /* =========================
-     START POSITION
-  ========================= */
+  //START POSITION
 
   panel1.style.right = `-${panel1.offsetWidth}px`;
   panel2.style.right = `-${panel2.offsetWidth}px`;
 
 
 
-  /* =========================
-     TOGGLE DRAWER 1
-  ========================= */
+  //TOGGLE DRAWER 1
 
   let open1 = false;
 
@@ -300,9 +288,7 @@ function hideStuff() {
 
 
 
-  /* =========================
-     TOGGLE DRAWER 2
-  ========================= */
+  //TOGGLE DRAWER 2
 
   let open2 = false;
 
@@ -335,9 +321,7 @@ function hideStuff() {
 
 
 
-  /* =========================
-     RESIZE DRAWER 1
-  ========================= */
+  //RESIZE DRAWER 1
 
   let resizing1 = false;
 
@@ -350,9 +334,7 @@ function hideStuff() {
 
 
 
-  /* =========================
-     RESIZE DRAWER 2
-  ========================= */
+  //RESIZE DRAWER 2
 
   let resizing2 = false;
 
@@ -365,15 +347,11 @@ function hideStuff() {
 
 
 
-  /* =========================
-     MOUSE MOVE
-  ========================= */
+  //MOUSE MOVE
 
   document.addEventListener("mousemove", function (e) {
 
-    /* =========================
-       DRAWER 1 RESIZE
-    ========================= */
+    //DRAWER 1 RESIZE
 
     if (resizing1) {
 
@@ -392,9 +370,7 @@ function hideStuff() {
     }
 
 
-    /* =========================
-       DRAWER 2 RESIZE
-    ========================= */
+    //DRAWER 2 RESIZE
 
     if (resizing2) {
 
@@ -418,10 +394,8 @@ function hideStuff() {
 
 
 
-  /* =========================
-     MOUSE UP
-  ========================= */
-
+  //MOUSE UP
+  
   document.addEventListener("mouseup", function () {
 
     resizing1 = false;
