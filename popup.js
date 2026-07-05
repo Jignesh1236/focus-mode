@@ -1,7 +1,12 @@
 var button = document.getElementById("hide");
+var whitelistBtn = document.getElementById("whitelistBtn");
 var timerDisplay = document.getElementById("sessionTimer");
 var videoCountDisplay = document.getElementById("videoCount");
 var timerInterval;
+
+whitelistBtn.onclick = function () {
+  window.open("whitelist.html", "whitelistWindow", "width=380,height=520");
+};
 
 chrome.storage.local.get(["mode"], function (data) {
 

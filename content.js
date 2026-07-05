@@ -1129,3 +1129,253 @@ document.addEventListener("yt-navigate-start", function () {
   }
 
 });
+
+// ===== CHANNEL WHITELIST =====
+
+function normalizeChannelText(text) {
+  if (!text) {
+    return "";
+  }
+  return text
+    .toLowerCase()
+    .replace(/^https?:\/\/(www\.)?youtube\.com/, "")
+    .replace(/^\/(@|channel\/|c\/|user\/)/, "")
+    .replace(/\/+$/, "")
+    .trim();
+}
+
+function getChannelLinkElement() {
+  var selectors = [
+    "ytd-video-owner-renderer a.yt-simple-endpoint[href^='/@']",
+    "ytd-video-owner-renderer a[href^='/channel/']",
+    "ytd-watch-metadata ytd-channel-name a",
+    "ytd-video-owner-renderer #channel-name a",
+    "#owner #channel-name a",
+    "#upload-info #channel-name a",
+    "#channel-name a",
+    "#top-row a.yt-simple-endpoint",
+    "#above-the-fold a[href^='/@']",
+    "#above-the-fold a[href^='/channel/']"
+  ];
+  for (var i = 0; i < selectors.length; i++) {
+    var el = document.querySelector(selectors[i]);
+    if (el) {
+      return el;
+    }
+  }
+  return null;
+}
+
+function getOwnerScope() {
+  var el = getChannelLinkElement();
+  if (el) {
+    var owner = el.closest("ytd-video-owner-renderer") || el.closest("#top-row");
+    if (owner) {
+      return owner;
+    }
+  }
+  return document;
+}
+
+function getSubscribeContainer() {
+  var scopes = [getOwnerScope(), document];
+  var selectors = ["#subscribe-button", "ytd-subscribe-button-renderer", "#subscribe-button-shape"];
+  for (var s = 0; s < scopes.length; s++) {
+    if (!scopes[s]) {
+      continue;
+    }
+    for (var i = 0; i < selectors.length; i++) {
+      var el = scopes[s].querySelector(selectors[i]);
+      if (el) {
+        return el;
+      }
+    }
+  }
+  return null;
+}
+
+function getCurrentChannelInfo() {
+  var id = "";
+  var name = "";
+
+  // Primary: the player's own getVideoData() API, always available once
+  // the player loads and independent of YouTube's DOM/UI structure.
+  var player = document.getElementById("movie_player");
+  if (player && typeof player.getVideoData === "function") {
+    try {
+      var videoData = player.getVideoData();
+      if (videoData && videoData.author) {
+        name = (videoData.author || "").trim();
+      }
+    } catch (e) {
+      // ignore, fall back to DOM
+    }
+  }
+
+  // Also read the visible channel link for a stable id (handle/URL),
+  // and to fill in the name if the player API wasn't ready yet.
+  var el = getChannelLinkElement();
+  if (el) {
+    var href = (el.getAttribute("href") || "").trim();
+    var text = (el.textContent || "").trim();
+    if (href) {
+      id = href;
+    }
+    if (!name && text) {
+      name = text;
+    }
+  }
+
+  if (!id && !name) {
+    return null;
+  }
+  return { id: id, name: name };
+}
+
+function isChannelWhitelisted(list, channel) {
+  for (var i = 0; i < list.length; i++) {
+    var entry = normalizeChannelText(list[i]);
+    if (entry === normalizeChannelText(channel.id) || entry === normalizeChannelText(channel.name)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function toggleCurrentChannelWhitelist(channel) {
+  chrome.storage.local.get(["whitelistChannels"], function (data) {
+    var list = data.whitelistChannels || [];
+    var index = -1;
+    for (var i = 0; i < list.length; i++) {
+      var entry = normalizeChannelText(list[i]);
+      if (entry === normalizeChannelText(channel.id) || entry === normalizeChannelText(channel.name)) {
+        index = i;
+        break;
+      }
+    }
+    if (index >= 0) {
+      list.splice(index, 1);
+    } else {
+      list.push(channel.id || channel.name);
+    }
+    chrome.storage.local.set({ whitelistChannels: list }, function () {
+      refreshWhitelistButton(channel);
+    });
+  });
+}
+
+function refreshWhitelistButton(channel) {
+  var btn = document.getElementById("ext-whitelist-toggle");
+  if (!btn) {
+    return;
+  }
+  chrome.storage.local.get(["whitelistChannels", "mode"], function (data) {
+    // If mode is "show", disable whitelist system
+    if (data.mode === "show") {
+      removeWhitelistOverlay();
+      return;
+    }
+
+    var list = data.whitelistChannels || [];
+    var allowed = list.length === 0 || isChannelWhitelisted(list, channel);
+    if (allowed) {
+      btn.textContent = "\u2713 Whitelisted";
+      btn.style.background = "#3ea6ff";
+      btn.style.color = "#fff";
+      btn.style.borderColor = "#3ea6ff";
+      removeWhitelistOverlay();
+    } else {
+      showWhitelistOverlay(channel);
+    }
+  });
+}
+
+function showWhitelistOverlay(channel) {
+  if (document.getElementById("ext-whitelist-overlay")) {
+    return;
+  }
+  var overlay = document.createElement("div");
+  overlay.id = "ext-whitelist-overlay";
+  overlay.style = "position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);color:#fff;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:Roboto,Arial,sans-serif;padding:20px;box-sizing:border-box;";
+  overlay.innerHTML =
+    "<div style='font-size:22px;margin-bottom:10px;'>\u26A0 This channel is not whitelisted</div>" +
+    "<div style='font-size:15px;opacity:0.8;margin-bottom:20px;'>" + (channel.name || "") + "</div>" +
+    "<div style='display:flex;gap:12px;'>" +
+    "<button id='ext-whitelist-overlay-add' style='padding:10px 20px;border:none;border-radius:20px;background:#3ea6ff;color:#fff;cursor:pointer;font-size:14px;'>Add to Whitelist</button>" +
+    "<button id='ext-whitelist-overlay-home' style='padding:10px 20px;border:none;border-radius:20px;background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;font-size:14px;'>Back to Home</button>" +
+    "</div>";
+  document.body.appendChild(overlay);
+  document.getElementById("ext-whitelist-overlay-add").onclick = function () {
+    toggleCurrentChannelWhitelist(channel);
+  };
+  document.getElementById("ext-whitelist-overlay-home").onclick = function () {
+    window.location.href = "https://www.youtube.com";
+  };
+}
+
+function removeWhitelistOverlay() {
+  var overlay = document.getElementById("ext-whitelist-overlay");
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+function ensureWhitelistButton() {
+  // Check if mode is "show" - if so, disable whitelist system
+  chrome.storage.local.get(["mode"], function (data) {
+    if (data.mode === "show") {
+      var existing = document.getElementById("ext-whitelist-toggle");
+      if (existing) {
+        existing.remove();
+      }
+      removeWhitelistOverlay();
+      return;
+    }
+
+    if (window.location.pathname !== "/watch") {
+      var existing = document.getElementById("ext-whitelist-toggle");
+      if (existing) {
+        existing.remove();
+      }
+      removeWhitelistOverlay();
+      return;
+    }
+    var channel = getCurrentChannelInfo();
+    if (!channel) {
+      return;
+    }
+    var btn = document.getElementById("ext-whitelist-toggle");
+    if (btn && btn.getAttribute("data-channel") === channel.id) {
+      refreshWhitelistButton(channel);
+      return;
+    }
+    if (btn) {
+      btn.remove();
+    }
+    var subscribeContainer = getSubscribeContainer();
+    if (!subscribeContainer || !subscribeContainer.parentNode) {
+      return;
+    }
+    btn = document.createElement("button");
+    btn.id = "ext-whitelist-toggle";
+    btn.setAttribute("data-channel", channel.id);
+    btn.style = "margin-left:8px;padding:0 16px;height:36px;border-radius:18px;border:1px solid rgba(0,0,0,0.2);background:#fff;color:#0f0f0f;cursor:pointer;font-size:14px;font-family:Roboto,Arial,sans-serif;flex-shrink:0;";
+    subscribeContainer.parentNode.insertBefore(btn, subscribeContainer.nextSibling);
+    btn.onclick = function () {
+      toggleCurrentChannelWhitelist(channel);
+    };
+    refreshWhitelistButton(channel);
+  });
+}
+
+setInterval(function () {
+
+  ensureWhitelistButton();
+
+}, 1500);
+
+document.addEventListener("yt-navigate-finish", function () {
+
+  ensureWhitelistButton();
+
+});
