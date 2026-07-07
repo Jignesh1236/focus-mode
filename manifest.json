@@ -15,7 +15,7 @@
 
   "web_accessible_resources": [
     {
-      "resources": ["imgs/notes-bg.jpg", "imgs/wa.svg"],
+      "resources": ["imgs/notes-bg.jpg", "imgs/aichat-bg.jpg", "imgs/wa.svg"],
       "matches": ["*://*.youtube.com/*"]
     }
   ],

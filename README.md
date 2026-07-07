@@ -1,9 +1,6 @@
-<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<div align="center">
 
-<div align="center" style="background-image: url('imgs/bg.png'); background-size: cover; background-position: center; padding: 60px 20px; border-radius: 20px; margin: 20px 0; font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-
-# 🎯 BingeBlocker
+# BingeBlocker
 
 **Transform your YouTube experience into a productive learning environment**
 
@@ -16,29 +13,27 @@
 
 ---
 
-<div style="background-image: url('imgs/notes-bg.jpg'); background-size: cover; background-position: center; padding: 40px 20px; border-radius: 20px; margin: 20px 0; font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-
 ## ✨ Features
 
-- 🚫 **Hide Distractions** - Remove related videos, comments, shorts, notifications, and homepage grid
-- 📝 **Built-in Notes Panel** - Take timestamped notes while watching videos
-- 💾 **Import/Export Notes** - Save and share your notes as JSON files
-- 📊 **Session Tracking** - Monitor your watch time and video count
-- ⏱️ **Session Timer** - Track total time spent with double-click reset
-- 🎨 **Glassmorphism UI** - Beautiful frosted glass design
-- 📋 **Channel Whitelist** - Allow specific channels to show all content
-- 🔧 **Resizable Panels** - Customize drawer widths to your preference
-- 🎬 **Video Markers** - Visual markers on progress bar for your notes
-
-</div>
+- 🚫 **Hide Distractions** — Remove related videos, comments, shorts, notifications, and homepage grid
+- 📝 **Built-in Notes Panel** — Take timestamped notes while watching videos
+- 💾 **Import / Export Notes** — Save and share your notes as JSON files
+- 📊 **Session Tracking** — Monitor your watch time and video count
+- ⏱️ **Session Timer** — Track total time spent with double-click reset
+- 🎨 **Glassmorphism UI** — Beautiful frosted glass design
+- 📋 **Channel Whitelist** — Allow specific channels to show all content
+- 🔧 **Resizable Panels** — Customize drawer widths to your preference
+- 🎬 **Video Markers** — Visual markers on progress bar for your notes
+- 🤖 **AI Chat Panel** — Context-aware AI assistant powered by Pollinations AI
 
 ---
 
 ## 📸 Preview
 
 ### Main Popup
+
 <div align="center">
-  <img src="imgs/bg.png" alt="Extension Popup" width="400" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+  <img src="imgs/bg.png" alt="Extension Popup" width="400">
 </div>
 
 - Session timer with real-time tracking
@@ -48,15 +43,12 @@
 
 ### Notes Panel
 
-
 - Timestamped note-taking
-- Import/Export functionality
+- Import / Export functionality
 - Beautiful glassmorphism design
 - Video markers on progress bar
 
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 🚀 Installation
 
@@ -82,13 +74,9 @@
 
 ### For End Users
 
-Coming soon to Chrome Web Store!
-
-</div>
+> Coming soon to Chrome Web Store!
 
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 📖 Usage
 
@@ -99,82 +87,79 @@ Coming soon to Chrome Web Store!
 
 ### Taking Notes
 1. Enable focus mode
-2. Click the **Notes** button on the right side of YouTube
+2. Click the **Notes** tab on the right side of YouTube
 3. Type your note and click **Add Note**
 4. Notes are automatically timestamped
-5. Click on a note to jump to that timestamp
+5. Click on a timestamp to jump to that moment in the video
 
 ### Managing Notes
-- **Import Notes** - Click the import icon to load notes from a JSON file
-- **Export Notes** - Click the export icon to save your notes
-- **Clear All** - Click Clear to remove all notes for current video
+| Action | How |
+|--------|-----|
+| **Import Notes** | Click the import icon to load notes from a JSON file |
+| **Export Notes** | Click the export icon to save your notes |
+| **Clear All** | Click Clear to remove all notes for the current video |
 
 ### Session Tracking
-- **Session Time** - Shows total time spent watching (double-click to reset)
-- **Videos Watched** - Counts unique videos viewed (double-click to reset)
+- **Session Time** — Shows total time spent watching *(double-click to reset)*
+- **Videos Watched** — Counts unique videos viewed *(double-click to reset)*
 
 ### Channel Whitelist
 1. Click **Whitelist** in the popup
 2. Add channels you want to allow full access
 3. Whitelisted channels show all content even in focus mode
+4. A CAPTCHA challenge is shown before adding — to prevent accidental whitelisting
 
-</div>
+### AI Chat
+1. Click the **AI Chat** tab on the right side of YouTube
+2. Ask any question — the AI automatically knows the video title, channel, and current timestamp
+3. Responses stream in real-time with markdown formatting
 
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 🛠️ Tech Stack
 
-- **HTML5** - Structure
-- **CSS3** - Styling with glassmorphism effects
-- **JavaScript (ES6+)** - Functionality
-- **Chrome Extension API** - Storage and content scripts
-- **Font Awesome** - Icons
-- **Varela Round** - Typography
-
-</div>
+| Technology | Purpose |
+|------------|---------|
+| **HTML5 / CSS3** | Structure and glassmorphism styling |
+| **JavaScript (ES6+)** | All extension logic |
+| **Chrome Extension API (MV3)** | Storage, content scripts, background worker |
+| **Pollinations AI** | Streaming AI chat (no API key needed) |
+| **marked.js** | Markdown rendering in AI responses |
+| **Font Awesome 6** | Icons throughout the UI |
+| **Varela Round** | Typography |
 
 ---
-
-<div style="background-image: url('imgs/bg.png'); background-size: cover; background-position: center; padding: 40px 20px; border-radius: 20px; margin: 20px 0; font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 📂 Project Structure
 
 ```
 hide/
-├── 📄 manifest.json          # Extension configuration
-├── 🎨 popup.html            # Extension popup UI
-├── ⚡ popup.js              # Popup functionality
-├── 🎬 content.js            # Content script for YouTube
-├── 🔧 background.js         # Background service worker
-├── 📋 whitelist.html        # Whitelist management UI
-├── 📝 whitelist.js          # Whitelist functionality
-├── 🖼️ imgs/                 # Images and assets
-│   ├── bg.png
-│   ├── notes-bg.jpg
-│   └── wa.svg
-└── 🌐 landing/              # Landing page assets
+├── 📄 manifest.json        # Extension configuration (Manifest V3)
+├── 🎨 popup.html           # Extension popup UI
+├── ⚡ popup.js             # Popup functionality & session timer
+├── 🎬 js.js               # Content script injected into YouTube
+├── 🔧 background.js        # Background service worker
+├── 📋 whitelist.html       # Whitelist management UI
+├── 📝 whitelist.js         # Whitelist functionality
+├── 🖼️ imgs/                # Images and assets
+│   ├── bg.png              # Main background
+│   ├── notes-bg.jpg        # Notes panel background
+│   ├── aichat-bg.jpg       # AI chat panel background
+│   └── wa.svg              # Whitelist warning illustration
+└── 🌐 landing/             # Landing page assets
 ```
 
-</div>
-
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest new features
-- Submit pull requests
 
-</div>
+- 🐛 Report bugs
+- 💡 Suggest new features
+- 🔀 Submit pull requests
 
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 👨‍💻 Author
 
@@ -183,24 +168,18 @@ Contributions are welcome! Feel free to:
 - [GitHub](https://github.com/jignesh1236)
 - [Project Repository](https://github.com/Jignesh1236/focus-mode)
 
-</div>
-
 ---
-
-<div style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-</div>
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-<div align="center" style="font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<div align="center">
 
 **Made with ❤️ for productive learning**
 
-[⬆ Back to Top](#-yt-focus-mode)
+[⬆ Back to Top](#-bingeblocker)
 
 </div>
